@@ -11,7 +11,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lerna run lint",
-      "pre-test": "lerna run test"
+      "pre-push": "lerna run test"
     }
   },
   "devDependencies": {
