@@ -1,6 +1,6 @@
 import express, { Express } from 'express'
 import { Routes } from '../Routes'
-import { IPostRecordBody, IRecordResponse } from '@archivist/record-service-interface'
+import { IPostRecordBody, IRecordResponse, IListRecordResponse } from '@archivist/record-service-interface'
 import expressPinoLogger from 'express-pino-logger'
 import { ILogger } from './Logger'
 
@@ -32,6 +32,11 @@ export class ExpressApplication {
     app.post('/record', async (req, res) => {
       const requestBody = req.body as IPostRecordBody
       const responseBody: IRecordResponse = await routes.record.post(requestBody)
+      return res.json(responseBody)
+    })
+
+    app.get('/records', async (_, res) => {
+      const responseBody: IListRecordResponse = await routes.record.list()
       return res.json(responseBody)
     })
   }

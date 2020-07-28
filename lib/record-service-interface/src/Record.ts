@@ -8,3 +8,7 @@ export interface IRecordResponse {
   data: string
   tags: string[]
 }
+
+export interface IListRecordResponse {
+  ids: string[]
+}
