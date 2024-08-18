@@ -1,19 +1,22 @@
 import { RecordStore, IStoredRecord } from './RecordStore'
 import { LocalStorage } from '../../infra/LocalStorage'
-import { PostRecord } from './PostRecord'
-import { ListRecords } from './ListRecords'
+import { PostRecordOperation } from './PostRecordOperation'
+import { ListRecordOperation } from './ListRecordOperation'
+import { GetRecordOperation } from './GetRecordOperation'
+import { ILogger } from '../../infra/Logger'
 
 export class RecordOperations {
-  public static async build() {
+  public static async build(logger: ILogger) {
     const recordStore = new RecordStore(
       await LocalStorage.build<Omit<IStoredRecord, 'id'>>('record')
     )
-    await recordStore.clear()
-    const postOperation = new PostRecord(async (data: string) => recordStore.create(data))
-    const listOperation = new ListRecords(async () => recordStore.list())
+    const postOperation = new PostRecordOperation(async (data: string) => recordStore.create(data))
+    const listOperation = new ListRecordOperation(async () => recordStore.list())
+    const getOperation = new GetRecordOperation(async (id: string) => recordStore.findById(id))
     return {
-      post: postOperation.post.bind(postOperation),
-      list: listOperation.list.bind(listOperation)
+      post: postOperation.build(),
+      get: getOperation.build(),
+      list: listOperation.build()
     }
   }
 }

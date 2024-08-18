@@ -9,6 +9,10 @@ export interface IRecordResponse {
   tags: string[]
 }
 
+export interface IListRecordQueryParams {
+  tags: string[]
+}
+
 export interface IListRecordResponse {
   ids: string[]
 }
